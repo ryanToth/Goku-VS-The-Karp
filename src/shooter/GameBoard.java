@@ -55,14 +55,16 @@ public class GameBoard extends JPanel implements ActionListener {
     String highscore = "0";
     ExtraLife extraLife = null;
     Boss boss = null;
+    boolean firstTry = true;
     
     public GameBoard() throws UnsupportedEncodingException, IOException {
 
-        FileInputStream configStream = new FileInputStream("highscore/highscore.txt");
-        BufferedReader configReader = new BufferedReader(new InputStreamReader(configStream, "UTF-8"));
-        boolean firstTry = true;
 
-        while (configReader.ready() && firstTry) {
+        if (firstTry) {
+            
+            FileInputStream configStream = new FileInputStream("highscore/highscore.txt");
+            BufferedReader configReader = new BufferedReader(new InputStreamReader(configStream, "UTF-8"));
+
             highscore = configReader.readLine();
             firstTry = false;
         }
@@ -428,7 +430,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
                 BufferedWriter writer = null;
                 try {
-                    writer = new BufferedWriter(new PrintWriter("src/shooter/highscore.txt", "UTF-8"));
+                    writer = new BufferedWriter(new PrintWriter("highscore/highscore.txt", "UTF-8"));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(GameBoard.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (UnsupportedEncodingException ex) {
