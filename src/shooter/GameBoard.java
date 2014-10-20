@@ -56,6 +56,9 @@ public class GameBoard extends JPanel implements ActionListener {
     Boss boss = null;
     boolean firstTry = true;
     int shotsHit = 0;
+    boolean b = false;
+    boolean o = false;
+    boolean s = false;
     
     public GameBoard() {
 
@@ -93,6 +96,13 @@ public class GameBoard extends JPanel implements ActionListener {
         
                 if (code  == KeyEvent.VK_SPACE)
                     charging = false;
+                
+                if (e.getKeyCode() == KeyEvent.VK_B)
+                    b = false;
+                if (e.getKeyCode() == KeyEvent.VK_O)
+                    o = false;
+                if (e.getKeyCode() == KeyEvent.VK_S)
+                    s = false;
             }
 
             @Override
@@ -130,6 +140,13 @@ public class GameBoard extends JPanel implements ActionListener {
                     }
                     pause = false;
                 }
+                
+                if (e.getKeyCode() == KeyEvent.VK_B)
+                    b = true;
+                if (e.getKeyCode() == KeyEvent.VK_O)
+                    o = true;
+                if (e.getKeyCode() == KeyEvent.VK_S)
+                    s = true;
             }
 
         });
@@ -240,6 +257,11 @@ public class GameBoard extends JPanel implements ActionListener {
     
     public void actionPerformed(ActionEvent e) {
 
+        if (b & o & s & !bossFight) {
+            while(waveNumber%5 != 0) waveNumber++;
+            newGame(waveNumber);
+        }
+        
         if (!pause) {
             
             double enemyWait = 1500 / (waveNumber / 10 + 1.3);
@@ -498,22 +520,7 @@ public class GameBoard extends JPanel implements ActionListener {
 
             if (choice == 2) {
 
-                gunShip = new GunShip(this);
-                t = new Timer(5, this);
-                enemies = new LinkedList<>();
-                score = 0;
-                boss = null;
-                lives = 3;
-                start = System.currentTimeMillis();
-                waveTime = System.currentTimeMillis();
-                waveDuration = 5000;
-                newWave = false;
-                waveNumber = 1;
-                charging = false;
-                lastEnemyPast = false;
-                chargeTime = 0;
-                shotsHit = 0;
-                t.start();
+                newGame(1);
 
             } else if (choice == 1) {
 
@@ -532,5 +539,29 @@ public class GameBoard extends JPanel implements ActionListener {
                 System.exit(0);
             }
         }
+    }
+  
+    public void newGame(int num) {
+
+        t.stop();
+        gunShip = new GunShip(this);
+        t = new Timer(5, this);
+        enemies = new LinkedList<>();
+        score = 0;
+        boss = null;
+        lives = 3;
+        start = System.currentTimeMillis();
+        waveTime = System.currentTimeMillis();
+        waveDuration = 5000;
+        newWave = false;
+        waveNumber = num;
+        charging = false;
+        lastEnemyPast = false;
+        chargeTime = 0;
+        shotsHit = 0;
+        t.start();
+        b = false;
+        o = false;
+        s = false;
     }
 }
