@@ -294,9 +294,9 @@ public class GameBoard extends JPanel implements ActionListener {
                     boss = null;
                     bossFight = false;
                     newWave = true;
-                    start = System.currentTimeMillis() - 1001;
+                    lastEnemyPast = true;
                     waveNumber++;
-                    waveTime = System.currentTimeMillis() - 3000 - waveDuration;
+                    newWavePause = System.currentTimeMillis();
                 }
             }
 
@@ -466,8 +466,6 @@ public class GameBoard extends JPanel implements ActionListener {
 
                 highscore = String.valueOf(score);
 
-                
-                
                 try {
                     BufferedWriter writer = new BufferedWriter(new PrintWriter("highscore/highscore.txt", "UTF-8"));
                     writer.write(highscore);
